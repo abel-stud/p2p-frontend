@@ -14,7 +14,9 @@ import DealPage from './pages/DealPage'
 import HowItWorks from './pages/HowItWorks'
 
 // API Configuration
-const API_BASE_URL = 'https://p2p-railway-backend-production.up.railway.app';
+const API_BASE_URL = 'https://p2p-railway-backend-production.up.railway.app'
+
+
 function App() {
   const [listings, setListings] = useState([])
   const [loading, setLoading] = useState(false)
