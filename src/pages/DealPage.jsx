@@ -29,7 +29,8 @@ const DealPage = () => {
   const fetchDeal = async () => {
     setLoading(true)
     try {
-      const response = await fetch(`http://localhost:8000/deals/${tradeCode}`)
+      const API_BASE_URL = 'https://p2p-railway-backend-production.up.railway.app'
+       const response = await fetch(`${API_BASE_URL}/deals/${tradeCode}`)
       if (response.ok) {
         const data = await response.json()
         setDeal(data)
