@@ -111,7 +111,11 @@ const PostAd = ({ onAdPosted }) => {
         max_amount: formData.max_amount ? parseFloat(formData.max_amount) : null
       }
 
-      const response = await fetch('http://localhost:8000/listings', {
+      const API_BASE_URL = 'https://p2p-railway-backend-production.up.railway.app'
+      const response = await fetch(`${API_BASE_URL}/listings`, {
+
+      
+      
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
