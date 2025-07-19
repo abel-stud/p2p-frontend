@@ -24,7 +24,7 @@ const PostAd = ({ onAdPosted }) => {
   const [success, setSuccess] = useState('')
   
   const [formData, setFormData] = useState({
-    type: 'sell',
+    listing_type: 'sell',
     amount: '',
     rate: '',
     payment_method: '',
@@ -129,7 +129,7 @@ const PostAd = ({ onAdPosted }) => {
         setSuccess('Your ad has been posted successfully!')
         // Reset form
         setFormData({
-          type: 'sell',
+          listing_type: 'sell',
           amount: '',
           rate: '',
           payment_method: '',
@@ -183,7 +183,7 @@ const PostAd = ({ onAdPosted }) => {
                   <Label className="text-base font-medium">Trade Type</Label>
                   <RadioGroup
                     value={formData.type}
-                    onValueChange={(value) => handleInputChange('type', value)}
+                    onValueChange={(value) => handleInputChange('listing_type', value)}
                     className="flex space-x-6"
                   >
                     <div className="flex items-center space-x-2">
