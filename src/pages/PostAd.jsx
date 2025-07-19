@@ -103,13 +103,15 @@ const PostAd = ({ onAdPosted }) => {
     setError('')
     
     try {
-      const submitData = {
-        ...formData,
-        amount: parseFloat(formData.amount),
-        rate: parseFloat(formData.rate),
-        min_amount: formData.min_amount ? parseFloat(formData.min_amount) : null,
-        max_amount: formData.max_amount ? parseFloat(formData.max_amount) : null
-      }
+  const submitData = {
+    ...formData,
+    amount: parseFloat(formData.amount),
+    rate: parseFloat(formData.rate),
+    min_amount: formData.min_amount ? parseFloat(formData.min_amount) : null,
+    max_amount: formData.max_amount ? parseFloat(formData.max_amount) : null,
+    user_id: 2  // ✅ Temporary hardcoded user ID
+  }
+
 
       const API_BASE_URL = 'https://p2p-railway-backend-production.up.railway.app'
       const response = await fetch(`${API_BASE_URL}/listings`, {
