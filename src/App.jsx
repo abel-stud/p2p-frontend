@@ -1,5 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
 
 // Components
@@ -13,9 +13,8 @@ import PostAd from './pages/PostAd'
 import DealPage from './pages/DealPage'
 import HowItWorks from './pages/HowItWorks'
 
-// API Configuration
-const API_BASE_URL = 'https://p2p-railway-backend-production.up.railway.app'
-
+// API Configuration - FIXED: Updated to Railway backend URL
+const API_BASE_URL = 'https://p2p-railway-backend-production.up.railway.app';
 
 function App() {
   const [listings, setListings] = useState([])
@@ -27,14 +26,30 @@ function App() {
     try {
       const response = await fetch(`${API_BASE_URL}/listings`)
       const data = await response.json()
-      if (data.success) {
-        setListings(data.data)
+      
+      // FIXED: Backend returns array directly, not {success: true, data: [...]}
+      if (Array.isArray(data)) {
+        setListings(data)
+      } else {
+        console.error('Unexpected response format:', data)
+        setListings([])
       }
     } catch (error) {
       console.error('Error fetching listings:', error)
+      setListings([])
     } finally {
       setLoading(false)
     }
+  }
+
+  // Refresh listings
+  const handleRefresh = () => {
+    fetchListings()
+  }
+
+  // Handle new ad posted
+  const handleAdPosted = () => {
+    fetchListings() // Refresh listings when new ad is posted
   }
 
   useEffect(() => {
@@ -54,15 +69,15 @@ function App() {
                 <Listings 
                   listings={listings} 
                   loading={loading} 
-                  onRefresh={fetchListings} 
+                  onRefresh={handleRefresh} 
                 />
               } 
             />
             <Route 
               path="/post-ad" 
-              element={<PostAd onAdPosted={fetchListings} />} 
+              element={<PostAd onAdPosted={handleAdPosted} />} 
             />
-            <Route path="/deal/:tradeCode" element={<DealPage />} />
+            <Route path="/deal/:id" element={<DealPage />} />
             <Route path="/how-it-works" element={<HowItWorks />} />
           </Routes>
         </main>

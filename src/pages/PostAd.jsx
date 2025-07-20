@@ -32,7 +32,7 @@ const PostAd = ({ onAdPosted }) => {
     min_amount: '',
     max_amount: '',
     description: '',
-    user_id: 1 // Default admin user for demo
+    user_id: 1
   })
 
   const paymentMethods = [
@@ -63,7 +63,6 @@ const PostAd = ({ onAdPosted }) => {
       ...prev,
       [field]: value
     }))
-    // Clear errors when user starts typing
     if (error) setError('')
     if (success) setSuccess('')
   }
@@ -101,23 +100,20 @@ const PostAd = ({ onAdPosted }) => {
     
     setLoading(true)
     setError('')
+    setSuccess('')
     
     try {
-  const submitData = {
-    ...formData,
-    amount: parseFloat(formData.amount),
-    rate: parseFloat(formData.rate),
-    min_amount: formData.min_amount ? parseFloat(formData.min_amount) : null,
-    max_amount: formData.max_amount ? parseFloat(formData.max_amount) : null,
-    user_id: 2  // ✅ Temporary hardcoded user ID
-  }
+      const submitData = {
+        ...formData,
+        amount: parseFloat(formData.amount),
+        rate: parseFloat(formData.rate),
+        min_amount: formData.min_amount ? parseFloat(formData.min_amount) : null,
+        max_amount: formData.max_amount ? parseFloat(formData.max_amount) : null
+      }
 
+      console.log('Submitting data:', submitData) // Debug log
 
-      const API_BASE_URL = 'https://p2p-railway-backend-production.up.railway.app'
-      const response = await fetch(`${API_BASE_URL}/listings`, {
-
-      
-      
+      const response = await fetch('https://p2p-railway-backend-production.up.railway.app/listings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -125,10 +121,16 @@ const PostAd = ({ onAdPosted }) => {
         body: JSON.stringify(submitData)
       })
 
-      const data = await response.json()
+      console.log('Response status:', response.status) // Debug log
+      console.log('Response ok:', response.ok) // Debug log
 
-      if (data.success) {
-        setSuccess('Your ad has been posted successfully!')
+      const data = await response.json()
+      console.log('Response data:', data) // Debug log
+
+      // Check if response is successful (status 200-299) AND has an id (meaning listing was created)
+      if (response.ok && data.id) {
+        setSuccess(`Your ad has been posted successfully! Listing ID: ${data.id}`)
+        
         // Reset form
         setFormData({
           listing_type: 'sell',
@@ -141,17 +143,23 @@ const PostAd = ({ onAdPosted }) => {
           description: '',
           user_id: 1
         })
+        
         // Refresh listings
         if (onAdPosted) onAdPosted()
-        // Redirect to listings after 2 seconds
+        
+        // Redirect to listings after 3 seconds
         setTimeout(() => {
           navigate('/listings')
-        }, 2000)
+        }, 3000)
       } else {
-        setError(data.message || 'Failed to post ad')
+        // Handle error cases
+        const errorMessage = data.detail || data.message || `Server error: ${response.status}`
+        setError(errorMessage)
+        console.error('Error response:', data)
       }
     } catch (err) {
-      setError('Network error. Please try again.')
+      console.error('Network error:', err)
+      setError('Network error. Please check your connection and try again.')
     } finally {
       setLoading(false)
     }
@@ -184,7 +192,7 @@ const PostAd = ({ onAdPosted }) => {
                 <div className="space-y-3">
                   <Label className="text-base font-medium">Trade Type</Label>
                   <RadioGroup
-                    value={formData.type}
+                    value={formData.listing_type}
                     onValueChange={(value) => handleInputChange('listing_type', value)}
                     className="flex space-x-6"
                   >

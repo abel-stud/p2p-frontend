@@ -17,8 +17,9 @@ import {
 const Listings = ({ listings, loading, onRefresh }) => {
   const [activeTab, setActiveTab] = useState('all')
 
-  const buyListings = listings.filter(listing => listing.listing.type === 'buy')
-  const sellListings = listings.filter(listing => listing.listing.type === 'sell')
+  // FIXED: Changed listing.type to listing.listing_type
+  const buyListings = listings.filter(listing => listing.listing_type === 'buy')
+  const sellListings = listings.filter(listing => listing.listing_type === 'sell')
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
@@ -47,9 +48,10 @@ const Listings = ({ listings, loading, onRefresh }) => {
       <CardHeader className="pb-3">
         <div className="flex justify-between items-start">
           <div className="flex items-center space-x-2">
-            <Badge className={getTypeColor(listing.listing.type)}>
-              {getTypeIcon(listing.listing.type)}
-              <span className="ml-1 capitalize">{listing.type}</span>
+            {/* FIXED: Changed listing.type to listing.listing_type */}
+            <Badge className={getTypeColor(listing.listing_type)}>
+              {getTypeIcon(listing.listing_type)}
+              <span className="ml-1 capitalize">{listing.listing_type}</span>
             </Badge>
             <Badge variant="outline">
               {listing.status}
