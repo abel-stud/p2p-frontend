@@ -11,7 +11,7 @@
     }
   ],
   "env": {
-    "VITE_API_URL": "https://p2p-usdt-backend.onrender.com"
+    "VITE_API_URL": "https://p2p-railway-backend-production.up.railway.app"
   }
 }
 
