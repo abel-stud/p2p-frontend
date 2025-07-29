@@ -10,8 +10,9 @@
       "destination": "/index.html"
     }
   ],
-  "env": {
+ "env": {
     "VITE_API_URL": "https://p2p-railway-backend-production.up.railway.app"
+ 
   }
 }
 
